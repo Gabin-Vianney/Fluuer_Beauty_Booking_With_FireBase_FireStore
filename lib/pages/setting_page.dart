@@ -1,15 +1,20 @@
 import 'package:firebasebookingapp/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Provider//theme_provider.dart';
+import '../Provider/theme_provider.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Access the current theme provider
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
+        title: const Text('Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -19,9 +24,11 @@ class SettingsPage extends StatelessWidget {
             ListTile(
               title: const Text('Change theme mode'),
               trailing: IconButton(
-                icon: const Icon(Icons.brightness_6),
+                icon: themeProvider.isDarkMode
+                    ? const Icon(Icons.dark_mode, color: primaryColor,) // Icon for dark mode
+                    : const Icon(Icons.light_mode,color: primaryColor,), // Icon for light mode
                 onPressed: () {
-                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                  themeProvider.toggleTheme();
                 },
               ),
             ),

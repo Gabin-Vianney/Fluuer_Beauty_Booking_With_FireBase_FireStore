@@ -98,13 +98,59 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const Divider(thickness: 1),
               ListTile(
-                leading: const Icon(Icons.logout, color: primaryColor),
-                title: const Text("Déconnexion",
-                    style: TextStyle(color: primaryColor)),
-                onTap: () {
-                  logout();
+                onTap: () async {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: const Text(
+                            textAlign: TextAlign.center,
+                            "Log out",
+                          ),
+                          content: const Text(
+                            "Are you sure you want to logout?",
+                            style: TextStyle(
+                              color: Color(0xffee7b64),
+                            ),
+                          ),
+                          actions: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.cancel,
+                              ),
+                              color: const Color(0xffee7b64),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await authService.signOut();
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()),
+                                    (route) => false);
+                              },
+                              icon: const Icon(
+                                Icons.done,
+                              ),
+                              color: Colors.green,
+                            ),
+                          ],
+                        );
+                      });
                 },
-              ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                leading: const Icon(Icons.exit_to_app, color: primaryColor),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(color: secondaryColor, fontSize: 15.0),
+                ),
+              )
             ],
           ),
         ),
@@ -163,7 +209,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   }
                   // Mettre à jour les informations de l'utilisateur dans Firestore
-                  await DatabaseService(uid: user.uid).updateUserData(newFullName, newEmail);
+                  await DatabaseService(uid: user.uid)
+                      .updateUserData(newFullName, newEmail);
                   setState(() {
                     fullName = newFullName;
                     email = newEmail;
@@ -190,7 +237,8 @@ class _ProfilePageState extends State<ProfilePage> {
         return AlertDialog(
           title: const Text("Changer le mot de passe"),
           content: TextFormField(
-            decoration: const InputDecoration(labelText: "Nouveau mot de passe"),
+            decoration:
+                const InputDecoration(labelText: "Nouveau mot de passe"),
             obscureText: false,
             onChanged: (value) {
               newPassword = value;
@@ -210,7 +258,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   try {
                     await user.updatePassword(newPassword);
                     Navigator.of(context).pop();
-                    ShowSnackbar(context, primaryColor, "Mot de passe mis à jour");
+                    ShowSnackbar(
+                        context, primaryColor, "Mot de passe mis à jour");
                   } catch (e) {
                     ShowSnackbar(context, primaryColor, "Erreur");
                   }
@@ -222,10 +271,5 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
-  }
-
-  void logout() async {
-    await authService.signOut();
-    nextScreen(context, const LoginPage());
   }
 }

@@ -263,8 +263,8 @@ class _HomePageState extends State<HomePage> {
                         : null,
                   ),
                   Positioned(
-                     bottom: 1,
-                     right: -15,
+                    bottom: 1,
+                    right: -15,
                     child: Container(
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -279,29 +279,86 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.settings,color: primaryColor,),
-              title: const Text('Settings' , style: TextStyle(color: secondaryColor,)),
+              leading: const Icon(
+                Icons.settings,
+                color: primaryColor,
+              ),
+              title: const Text('Settings',
+                  style: TextStyle(
+                    color: secondaryColor,
+                  )),
               onTap: () {
                 Navigator.pop(context);
                 _onItemTapped(2);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.person,color: primaryColor,),
-              title: const Text('Profile', style: TextStyle(color: secondaryColor),),
+              leading: const Icon(
+                Icons.person,
+                color: primaryColor,
+              ),
+              title: const Text(
+                'Profile',
+                style: TextStyle(color: secondaryColor),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _onItemTapped(1);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.exit_to_app,color: primaryColor,),
-              title: const Text('Log out', style: TextStyle(color: secondaryColor),),
               onTap: () async {
-                await authService.signOut();
-                nextScreenReplace(context, const LoginPage());
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text(
+                          textAlign: TextAlign.center,
+                          "Log out",
+                        ),
+                        content: const Text(
+                          "Are you sure you want to logout?",
+                          style: TextStyle(
+                            color: Color(0xffee7b64),
+                          ),
+                        ),
+                        actions: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.cancel,
+                            ),
+                            color: const Color(0xffee7b64),
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              await authService.signOut();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginPage()),
+                                  (route) => false);
+                            },
+                            icon: const Icon(
+                              Icons.done,
+                            ),
+                            color: Colors.green,
+                          ),
+                        ],
+                      );
+                    });
               },
-            ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+              leading: const Icon(Icons.exit_to_app, color: primaryColor),
+              title: const Text(
+                "Logout",
+                style: TextStyle(color: secondaryColor, fontSize: 15.0),
+              ),
+            )
           ],
         ),
       ),
