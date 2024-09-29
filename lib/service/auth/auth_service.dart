@@ -3,26 +3,41 @@ import 'package:firebasebookingapp/service/database_service.dart';
 import 'package:firebasebookingapp/helper/helper_function.dart';
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+ // login function
+Future<String> loginWithEmailAndPassword(String email, String password) async {
+  try {
+    User? user = (await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password))
+        .user;
 
-  // login
-  Future<bool> loginUserWithEmailAndPassword(
-      String email, String password) async {
-    try {
-      User? user = (await firebaseAuth.signInWithEmailAndPassword(
-              email: email, password: password))
-          .user;
-
-      // Vérifiez si l'utilisateur existe
-      if (user != null) {
-        return true; // La connexion a réussi
-      } else {
-        return false; // Échec de la connexion
-      }
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      return false; // Échec de la connexion
+    if (user != null) {
+      // Connexion réussie
+      return "success";
+    } else {
+      // Connexion échouée, mais sans erreur explicite
+      return "failed";
     }
+  } on FirebaseAuthException catch (e) {
+    switch (e.code) {
+      case 'wrong-password':
+        return 'Le mot de passe est incorrect.';
+      case 'user-not-found':
+        return "Aucun utilisateur trouvé pour cet e-mail.";
+      case 'invalid-email':
+        return "L'adresse e-mail est invalide.";
+      case 'user-disabled':
+        return "Ce compte a été désactivé.";
+      case 'too-many-requests':
+        return "Trop de tentatives de connexion. Veuillez réessayer plus tard.";
+      default:
+        return "Une erreur inconnue s'est produite : ${e.message}";
+    }
+  } catch (e) {
+    return "Une erreur s'est produite";
   }
+}
+
+
 
   // register
   Future<bool> registerUserWithEmailAndPassword(

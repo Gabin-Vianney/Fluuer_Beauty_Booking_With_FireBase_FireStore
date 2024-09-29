@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   bool hidePassword = true;
   AuthService authService = AuthService();
 
-  // Expression régulière pour valider l'email
+  
   final RegExp _emailRegExp = RegExp(
     r'^[^@]+@[^@]+\.[^@]+$',
     caseSensitive: false,
@@ -214,26 +214,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    if (formKey.currentState!.validate()) {
+  if (formKey.currentState!.validate()) {
+    setState(() {
+      isLoading = true;
+    });
+    
+    String result = await authService.loginWithEmailAndPassword(email, password);
+
+    if (result == "success") {
+      
+      await HelperFunctions.saveUserLoggedInStatus(true);
+      await HelperFunctions.saveUserEmailSF(email);
+      nextScreenReplace(context, const HomePage());
+    } else {
+      
+      ShowSnackbar(context, primaryColor, result);
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
-
-      bool result =
-          await authService.loginUserWithEmailAndPassword(email, password);
-
-      if (result) {
-        await HelperFunctions.saveUserLoggedInStatus(true);
-        await HelperFunctions.saveUserEmailSF(email);
-        nextScreenReplace(context, const HomePage());
-      } else {
-        ShowSnackbar(context, primaryColor, "Login failed");
-        setState(() {
-          isLoading = false;
-        });
-      }
     }
   }
+}
+
 
   void resetPasswordDialog() {
     showDialog(
@@ -259,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 try {
                   await authService
-                      .resetPassword(resetEmail); // Appel correct de la méthode
+                      .resetPassword(resetEmail); 
                   Navigator.of(context).pop();
                   ShowSnackbar(
                       context, primaryColor, "Password reset email sent.");
