@@ -165,8 +165,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 15,
                             color: themeProvider.isDarkMode
                                 ? Colors.white
-                                : Colors
-                                    .black, 
+                                : Colors.black,
                           ),
                         ),
                       ),
@@ -186,6 +185,10 @@ class _HomePageState extends State<HomePage> {
                               clipBehavior: Clip.antiAlias,
                               semanticContainer: true,
                               shadowColor: Colors.blue,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? const Color(0xFF17203A)
+                                  : Colors.white24,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -200,7 +203,13 @@ class _HomePageState extends State<HomePage> {
                                   Text(service.name,
                                       style: const TextStyle(fontSize: 18)),
                                   Text("\$${service.price.toStringAsFixed(2)}",
-                                      style: const TextStyle(fontSize: 16)),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black87,
+                                      )),
                                 ],
                               ),
                             ),

@@ -198,40 +198,69 @@ class _ManageAppointmentsPageState extends State<ManageAppointmentsPage> {
                     String time = appointmentData['time'] ?? '';
                     double price = appointmentData['price'] ?? 0.0;
 
-                    return Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      borderOnForeground: false,
-                      clipBehavior: Clip.antiAlias,
-                      semanticContainer: true,
-                      shadowColor: Colors.blue,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(16.0),
-                        title: Text(serviceName,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Date: $date'),
-                            const SizedBox(height: 4.0),
-                            Text('Hour: $time'),
-                            const SizedBox(height: 4.0),
-                            Text('Price: \$${price.toStringAsFixed(2)}'),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.cancel, color: primaryColor),
-                          onPressed: () {
-                            _cancelAppointment(appointmentId);
-                          },
-                        ),
-                      ),
-                    );
+                  return Card(
+  elevation: 5,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15.0),
+  ),
+  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+  color: Theme.of(context).brightness == Brightness.dark
+      ? const Color(0xFF17203A) 
+      : Colors.white24 ,
+  child: ListTile(
+    contentPadding: const EdgeInsets.all(16.0),
+    title: Text(
+      serviceName,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white 
+            : Colors.black, 
+      ),
+    ),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Date: $date',
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white70 
+                : Colors.black87, 
+          ),
+        ),
+        const SizedBox(height: 4.0),
+        Text(
+          'Hour: $time',
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white70
+                : Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 4.0),
+        Text(
+          'Price: \$${price.toStringAsFixed(2)}',
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white70
+                : Colors.black87,
+          ),
+        ),
+      ],
+    ),
+    trailing: IconButton(
+      icon: const Icon(Icons.cancel),
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.redAccent 
+          : primaryColor, 
+      onPressed: () {
+        _cancelAppointment(appointmentId);
+      },
+    ),
+  ),
+);
+
                   },
                 );
               },
