@@ -6,6 +6,8 @@ import 'package:firebasebookingapp/widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../helper//helper_function.dart';
+import '../Provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -31,6 +33,8 @@ class _RegisterPageState extends State<RegisterPage> {
   );
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
@@ -219,8 +223,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   Text.rich(TextSpan(
                                       text: "Already have an account?",
-                                      style: const TextStyle(
-                                          color: Colors.black, fontSize: 14.0),
+                                      style: TextStyle(
+                                          color: themeProvider.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 14.0),
                                       children: <TextSpan>[
                                         TextSpan(
                                             mouseCursor:

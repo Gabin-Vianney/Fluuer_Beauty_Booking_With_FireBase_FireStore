@@ -6,6 +6,8 @@ import '../pages/home_page.dart';
 import '../pages/register_page.dart';
 import '../shared/constants.dart';
 import '../widgets/widgets.dart';
+import '../Provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -176,8 +180,11 @@ class _LoginPageState extends State<LoginPage> {
                               Text.rich(
                                 TextSpan(
                                   text: "Don't have an account ? ",
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 14.0),
+                                  style: TextStyle(
+                                      color: themeProvider.isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 14.0),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: "Sign in here",
@@ -254,8 +261,8 @@ class _LoginPageState extends State<LoginPage> {
                   await authService
                       .resetPassword(resetEmail); // Appel correct de la méthode
                   Navigator.of(context).pop();
-                  ShowSnackbar(context, primaryColor,
-                      "Password reset email sent.");
+                  ShowSnackbar(
+                      context, primaryColor, "Password reset email sent.");
                 } catch (e) {
                   ShowSnackbar(context, primaryColor, e.toString());
                 }
