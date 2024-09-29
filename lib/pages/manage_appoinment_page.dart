@@ -87,7 +87,7 @@ class _ManageAppointmentsPageState extends State<ManageAppointmentsPage> {
                   },
                   child: Row(
                     children: [
-                      const Icon(Icons.calendar_today, color: Colors.black),
+                      const Icon(Icons.calendar_today, color: primaryColor),
                       const SizedBox(width: 8),
                       Text('Choose Date: ${selectedDate.toLocal()}'
                           .split(' ')[0]),
@@ -109,7 +109,7 @@ class _ManageAppointmentsPageState extends State<ManageAppointmentsPage> {
                   },
                   child: Row(
                     children: [
-                      const Icon(Icons.access_time, color: Colors.black),
+                      const Icon(Icons.access_time, color: primaryColor),
                       const SizedBox(width: 8),
                       Text('Choose hour: ${selectedTime.format(context)}'),
                     ],

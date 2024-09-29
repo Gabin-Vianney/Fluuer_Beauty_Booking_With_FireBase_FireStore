@@ -15,7 +15,7 @@ void main() async {
   );
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeProvider(), 
+      create: (_) => ThemeProvider(),
       child: const MyApp(),
     ),
   );
@@ -54,6 +54,32 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Beauty Booking',
       themeMode: themeProvider.themeMode,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor:
+              Color(0xFF17203A), 
+        ),
+        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black), 
+          bodyMedium: TextStyle(color: Colors.black),
+          bodySmall: TextStyle(color: Colors.black),
+        ),
+      ),
+      darkTheme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor:
+              Color(0xFF17203A), 
+        ),
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white), 
+          bodyMedium: TextStyle(color: Colors.white),
+          bodySmall: TextStyle(color: Colors.white),
+        ),
+      ),
       home: isSignIn ? const HomePage() : const LoginPage(),
     );
   }

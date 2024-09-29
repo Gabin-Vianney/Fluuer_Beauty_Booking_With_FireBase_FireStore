@@ -14,6 +14,8 @@ import 'package:firebasebookingapp/shared/constants.dart';
 import 'package:firebasebookingapp/widgets/widgets.dart';
 import 'dart:io';
 import '../model/service_model.dart';
+import '../Provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,7 +106,7 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
-      print('Erreur lors du téléchargement de l\'image: $e');
+      print('Erreur lors du téléchargement de l\'image: ');
     }
   }
 
@@ -127,6 +129,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     Widget getBody() {
       switch (_selectedIndex) {
         case 0:
@@ -152,14 +156,17 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: 15.0,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
                           textAlign: TextAlign.justify,
                           "Your oasis of relaxation and well-being in the heart of the city. We offer a wide range of services from stylish haircuts to revitalizing facials, soothing massages, and perfect manicures. At Éclat Beauté, your beauty is our priority. Treat yourself to a moment of luxury and let us take care of you in a warm and relaxing atmosphere.",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.black,
+                            color: themeProvider.isDarkMode
+                                ? Colors.white
+                                : Colors
+                                    .black, 
                           ),
                         ),
                       ),
@@ -171,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                           return GestureDetector(
                             onTap: () => _navigateToServiceDetails(service),
                             child: Card(
-                              elevation: 10,
+                              elevation: 5,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),

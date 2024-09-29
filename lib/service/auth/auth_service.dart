@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasebookingapp/service/database_service.dart';
-
+import 'package:firebasebookingapp/helper/helper_function.dart';
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -48,11 +48,16 @@ class AuthService {
   }
 
   // sign out
-  Future<void> signOut() async {
+  
+  // sign out function
+  Future<dynamic> signOut() async {
     try {
+      await HelperFunctions.saveUserLoggedInStatus(false);
+      await HelperFunctions.saveUserEmailSF("");
+      await HelperFunctions.saveUserNameSF("");
       await firebaseAuth.signOut();
     } catch (e) {
-      print("Erreur lors de la déconnexion : $e");
+      return null;
     }
   }
 
@@ -61,7 +66,7 @@ class AuthService {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (e) {
-      throw Exception("Erreur lors de la réinitialisation du mot de passe: $e");
+      throw Exception("Erreur lors de la réinitialisation du mot de passe:");
     }
   }
 

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasebookingapp/service/database_service.dart';
 import 'package:firebasebookingapp/shared/constants.dart';
+import '../Provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -40,6 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile", style: TextStyle(color: secondaryColor)),
@@ -65,18 +69,20 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 20),
               Text(
                 fullName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color:
+                      themeProvider.isDarkMode ? Colors.white : Colors.black87,
                 ),
               ),
               const SizedBox(height: 10),
               Text(
                 email,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
-                  color: Colors.black54,
+                  color:
+                      themeProvider.isDarkMode ? Colors.white : Colors.black54,
                 ),
               ),
               const SizedBox(height: 30),
@@ -146,9 +152,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                 leading: const Icon(Icons.exit_to_app, color: primaryColor),
-                title: const Text(
+                title: Text(
                   "Logout",
-                  style: TextStyle(color: secondaryColor, fontSize: 15.0),
+                  style: TextStyle(
+                      color: themeProvider.isDarkMode
+                          ? Colors.white
+                          : Colors
+                              .black, // Changer la couleur en fonction du mode
+                      fontSize: 15.0),
                 ),
               )
             ],

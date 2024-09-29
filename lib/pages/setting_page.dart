@@ -8,7 +8,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access the current theme provider
     final themeProvider = Provider.of<ThemeProvider>(context);
     
     return Scaffold(
