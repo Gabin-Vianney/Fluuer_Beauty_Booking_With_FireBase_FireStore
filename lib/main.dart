@@ -6,6 +6,9 @@ import './pages/home_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:provider/provider.dart';
 import './Provider/theme_provider.dart';
+import 'package:firebasebookingapp/Provider/language_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebasebookingapp/gen_l10n/flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,11 +16,19 @@ void main() async {
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
   );
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
+      ],
+          child: const MyApp(),
+
     ),
+
   );
 }
 
@@ -50,32 +61,43 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Beauty Booking',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations
+            .delegate, // Optional for Cupertino-style widgets
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('fr', ''), // French
+      ],
+      locale: Provider.of<LanguageProvider>(context).locale,
       themeMode: themeProvider.themeMode,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor:
-              Color(0xFF17203A), 
+          backgroundColor: Color(0xFF17203A),
         ),
         primarySwatch: Colors.blue,
         brightness: Brightness.light,
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black), 
+          bodyLarge: TextStyle(color: Colors.black),
           bodyMedium: TextStyle(color: Colors.black),
           bodySmall: TextStyle(color: Colors.black),
         ),
       ),
       darkTheme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor:
-              Color(0xFF17203A), 
+          backgroundColor: Color(0xFF17203A),
         ),
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white), 
+          bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white),
           bodySmall: TextStyle(color: Colors.white),
         ),
